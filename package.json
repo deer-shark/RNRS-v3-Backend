@@ -1,0 +1,35 @@
+{
+  "name": "RNRS-v3-Backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap \"test/**/*.test.js\"",
+    "start": "fastify start -l info app.js",
+    "dev": "fastify start -w -l info -P -p 3030 app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deer-shark/RNRS-v3-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deer-shark/RNRS-v3-Backend/issues"
+  },
+  "homepage": "https://github.com/deer-shark/RNRS-v3-Backend#readme",
+  "dependencies": {
+    "fastify": "^3.0.0",
+    "fastify-plugin": "^3.0.0",
+    "fastify-autoload": "^3.3.1",
+    "fastify-sensible": "^3.1.0",
+    "fastify-cli": "^2.11.0"
+  },
+  "devDependencies": {
+    "tap": "^14.11.0"
+  }
+}
