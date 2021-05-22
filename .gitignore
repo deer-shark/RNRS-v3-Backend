@@ -1,3 +1,8 @@
+# RNRS v3 Backend
+.env
+key/rs-public.key
+key/rs-private.key
+
 # Logs
 logs
 *.log
