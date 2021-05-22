@@ -7,5 +7,7 @@ module.exports = {
   authExclude: [
     "POST /auth",
     "POST /declare/:eventId",
+    "GET /event",
+    "GET /event/:eventCode",
   ],
 }
