@@ -75,8 +75,8 @@ module.exports = async function (fastify, opts) {
     }
   );
 
-  Event.hasMany(EventOrg);
-  Event.hasMany(EventRole);
+  Event.hasMany(EventOrg, {as: "orgs"});
+  Event.hasMany(EventRole, {as: "roles"});
   EventOrg.belongsTo(Event);
   EventRole.belongsTo(Event);
 }
