@@ -5,7 +5,7 @@ const path = require('path');
 const AutoLoad = require('fastify-autoload');
 const SequelizeFastify = require('sequelize-fastify');
 const Auth = require('./services/Auth');
-
+const ModelAssociateSetup = require('./models/AssociateSetupSetup');
 
 module.exports = async function (fastify, opts) {
   // Place here your custom code!
@@ -45,6 +45,7 @@ module.exports = async function (fastify, opts) {
     dir: path.join(__dirname, 'models'),
     options: Object.assign({}, opts)
   });
+  fastify.register(ModelAssociateSetup);
 
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'routes'),

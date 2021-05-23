@@ -1,5 +1,5 @@
 exports.getAllEvent = fastify => async function (request, reply) {
-  const Event = fastify.sequelize.models.Event;
+  const {Event} = fastify.sequelize.models;
 
   const events = await Event.findAll({
     attributes: ['id', 'code', 'name', 'date', 'location'],
@@ -10,9 +10,7 @@ exports.getAllEvent = fastify => async function (request, reply) {
 }
 
 exports.getEventDetail = fastify => async function (request, reply) {
-  const Event = fastify.sequelize.models.Event;
-  const EventOrg = fastify.sequelize.models.EventOrg;
-  const EventRole = fastify.sequelize.models.EventRole;
+  const {Event, EventOrg, EventRole} = fastify.sequelize.models;
 
   const event = await Event.findOne({
     where: {
@@ -22,13 +20,13 @@ exports.getEventDetail = fastify => async function (request, reply) {
       {
         model: EventOrg,
         as: "orgs",
-        attributes: ['key', 'value'],
+        attributes: ['id', 'value'],
         //required: true,
       },
       {
         model: EventRole,
         as: "roles",
-        attributes: ['key', 'value'],
+        attributes: ['id', 'value'],
         //required: true,
       },
     ],

@@ -44,9 +44,6 @@ module.exports = async function (fastify, opts) {
         primaryKey: true,
         autoIncrement: true,
       },
-      key: {
-        type: DataTypes.STRING,
-      },
       value: {
         type: DataTypes.STRING,
       },
@@ -63,9 +60,6 @@ module.exports = async function (fastify, opts) {
         primaryKey: true,
         autoIncrement: true,
       },
-      key: {
-        type: DataTypes.STRING,
-      },
       value: {
         type: DataTypes.STRING,
       },
@@ -74,9 +68,4 @@ module.exports = async function (fastify, opts) {
       tableName: 'event_roles'
     }
   );
-
-  Event.hasMany(EventOrg, {as: "orgs"});
-  Event.hasMany(EventRole, {as: "roles"});
-  EventOrg.belongsTo(Event);
-  EventRole.belongsTo(Event);
 }

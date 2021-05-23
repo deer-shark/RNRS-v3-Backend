@@ -17,7 +17,7 @@ const verify = createVerifier({
 });
 
 exports.signJwt = fastify => async function (request, reply) {
-  const User = fastify.sequelize.models.User;
+  const {User} = fastify.sequelize.models;
   const user = await User.scope("withPassword").findOne({where: {account: request.body.account}});
   if (!user)
     throw fastify.httpErrors.unauthorized("Login failed");
