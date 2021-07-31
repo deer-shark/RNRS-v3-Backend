@@ -9,7 +9,6 @@ const ModelAssociateSetup = require('./models/AssociateSetupSetup');
 
 module.exports = async function (fastify, opts) {
   // Place here your custom code!
-
   fastify.register(
     SequelizeFastify,
     {
@@ -32,6 +31,8 @@ module.exports = async function (fastify, opts) {
       fastify.log.error('Unable to connect to the database:', error);
     }
   });
+  
+  fastify.register(require('fastify-cors'), {});
 
   fastify.decorateRequest('user', null);
   fastify.addHook('onRequest', Auth.verifyJwt(fastify));
@@ -51,4 +52,6 @@ module.exports = async function (fastify, opts) {
     dir: path.join(__dirname, 'routes'),
     options: Object.assign({}, opts)
   });
+  
+  //fastify.close();
 }

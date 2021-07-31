@@ -6,7 +6,7 @@ module.exports = {
   tokenExpiresIn: 3 * 60 * 60,
   authExclude: [
     "POST /auth",
-    "POST /declare/:eventId",
+    "POST /declare/:eventCode",
     "GET /event",
     "GET /event/:eventCode",
   ],
