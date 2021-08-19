@@ -32,6 +32,7 @@ module.exports = async function (fastify, opts) {
       },
     },
     {
+      tableName: 'users',
       defaultScope: {
         attributes: { exclude: ['password'] },
       },

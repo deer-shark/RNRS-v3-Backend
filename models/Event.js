@@ -34,7 +34,9 @@ module.exports = async function (fastify, opts) {
         type: DataTypes.STRING,
       },
     },
-    {}
+      {
+          tableName: 'events',
+      }
   );
   const EventOrg = fastify.sequelize.define(
     'EventOrg',

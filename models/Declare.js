@@ -27,6 +27,8 @@ module.exports = async function (fastify, opts) {
         type: DataTypes.STRING,
       },
     },
-    {}
+    {
+        tableName: 'declares',
+    }
   );
 }
