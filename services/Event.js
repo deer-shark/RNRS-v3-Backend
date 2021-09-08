@@ -9,8 +9,22 @@ exports.getAllEvent = fastify => async function (request, reply) {
   reply.send(events);
 }
 
+exports.getOrganizeEvent = fastify => async function (request, reply) {
+  const {Event} = fastify.sequelize.models;
+
+  const events = await Event.findAll({
+    attributes: ['id', 'code', 'name'],
+    where: {
+      organize: request.user.organize,
+    },
+  });
+
+  console.log(JSON.stringify(events, null, 2));
+  reply.send(events);
+}
+
 exports.getEventDetail = fastify => async function (request, reply) {
-  const {Event, EventOrg, EventRole} = fastify.sequelize.models;
+  const {Event, EventOrg, EventRole, EventGate} = fastify.sequelize.models;
 
   const event = await Event.findOne({
     where: {
@@ -26,6 +40,12 @@ exports.getEventDetail = fastify => async function (request, reply) {
       {
         model: EventRole,
         as: "roles",
+        attributes: ['id', 'value'],
+        //required: true,
+      },
+      {
+        model: EventGate,
+        as: "gates",
         attributes: ['id', 'value'],
         //required: true,
       },

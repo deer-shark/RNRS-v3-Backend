@@ -32,6 +32,28 @@ exports.newDeclare = fastify => async function (request, reply) {
   });
   reply.code(201).send({
     googleForm: (event.googleFormSrc != null),
-    hash: hash,
+    hash: `RNRSv3-${event.id}-${hash}`,
   });
+}
+
+exports.getDeclareByEventId = fastify => async function (request, reply) {
+  const {Event, Declare, EventOrg, EventRole} = fastify.sequelize.models;
+  const declare = await Declare.findAll({
+    where: {
+      EventId: request.params.eventId,
+    },
+    attributes: ['id', 'name', 'email', 'phone', 'hash', 'EventId', 'createdAt'],
+    include: [
+      {
+        model: EventOrg,
+        attributes: ['value'],
+      },
+      {
+        model: EventRole,
+        attributes: ['value'],
+      },
+    ],
+  });
+
+  reply.code(200).send(declare);
 }

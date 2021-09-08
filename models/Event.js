@@ -70,4 +70,20 @@ module.exports = async function (fastify, opts) {
       tableName: 'event_roles'
     }
   );
+    const EventGate = fastify.sequelize.define(
+        'EventGate',
+        {
+            id: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                primaryKey: true,
+                autoIncrement: true,
+            },
+            value: {
+                type: DataTypes.STRING,
+            },
+        },
+        {
+            tableName: 'event_gates'
+        }
+    );
 }
