@@ -18,6 +18,7 @@ exports.newCheckin = fastify => async function (request, reply) {
   const declare = await Declare.findOne({
     where: {
       hash: hashMD5,
+      eventId: eventId,
     },
     attributes: ['id', 'name', 'createdAt'],
     include: [
