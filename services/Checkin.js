@@ -1,12 +1,12 @@
 exports.newCheckin = fastify => async function (request, reply) {
-  const { Event, Declare, Checkin, EventOrg, EventRole } = fastify.sequelize.models;
-  const { eventId } = request.params;
+  const {Event, Declare, Checkin, EventOrg, EventRole, EventGate} = fastify.sequelize.models;
+  const {eventId} = request.params;
   const {
     hash,
     gateId,
   } = request.body;
-  const [ RNRSv3, eventId2, hashMD5 ] = hash.split("-");
-  if(RNRSv3 != "RNRSv3" || eventId2 != eventId)
+  const [RNRSv3, eventId2, hashMD5, isPhone = false] = hash.split("-");
+  if (RNRSv3 != "RNRSv3" || eventId2 != eventId)
     throw fastify.httpErrors.badRequest("Format does not match");
   const event = await Event.findOne({
     where: {
@@ -15,11 +15,15 @@ exports.newCheckin = fastify => async function (request, reply) {
   });
   if (!event)
     throw fastify.httpErrors.notFound("Event Not Found");
+  const declareWhere = isPhone ? {
+    phone: hashMD5,
+    eventId: eventId,
+  } : {
+    hash: hashMD5,
+    eventId: eventId,
+  };
   const declare = await Declare.findOne({
-    where: {
-      hash: hashMD5,
-      eventId: eventId,
-    },
+    where: declareWhere,
     attributes: ['id', 'name', 'createdAt'],
     include: [
       {
@@ -34,14 +38,31 @@ exports.newCheckin = fastify => async function (request, reply) {
   });
   if (!declare)
     throw fastify.httpErrors.notFound("Hash Not Found");
-  let checkin = await Checkin.create({
+  const history = await Checkin.findAll({
+    where: {
+      DeclareId: declare.id,
+    },
+    attributes: ['id', 'createdAt'],
+    include: [
+      {
+        model: EventGate,
+        attributes: ['value'],
+      },
+    ],
+    limit: 3,
+    order: [
+      ['id', 'DESC'],
+    ]
+  });
+  const checkin = await Checkin.create({
     DeclareId: declare.id,
     EventGateId: gateId,
     OperatorId: request.user.id,
   });
   reply.code(201).send({
     id: checkin.id,
-    declare: declare
+    declare: declare,
+    history: history,
   });
 }
 
@@ -82,8 +103,8 @@ exports.getCheckinByEventId = fastify => async function (request, reply) {
 }
 
 exports.addNote = fastify => async function (request, reply) {
-  const { Checkin } = fastify.sequelize.models;
-  const { checkinId } = request.params;
+  const {Checkin} = fastify.sequelize.models;
+  const {checkinId} = request.params;
   const {
     content,
   } = request.body;
@@ -96,7 +117,7 @@ exports.addNote = fastify => async function (request, reply) {
     throw fastify.httpErrors.notFound("Checkin Not Found");
   await Checkin.update({
     note: content,
-  },{
+  }, {
     where: {
       id: checkinId,
     },
