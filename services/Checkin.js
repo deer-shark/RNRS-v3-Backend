@@ -124,3 +124,17 @@ exports.addNote = fastify => async function (request, reply) {
   });
   reply.code(201).send({});
 }
+
+exports.removeCheckin = fastify => async function (request, reply) {
+  const {Checkin} = fastify.sequelize.models;
+  const {checkinId} = request.params;
+  const checkin = await Checkin.findOne({
+    where: {
+      id: checkinId,
+    },
+  });
+  if (!checkin)
+    throw fastify.httpErrors.notFound("Checkin Not Found");
+  await checkin.destroy();
+  reply.code(204).send({});
+}
