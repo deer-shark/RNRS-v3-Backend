@@ -11,12 +11,14 @@ exports.getAllEvent = fastify => async function (request, reply) {
 
 exports.getOrganizeEvent = fastify => async function (request, reply) {
   const {Event} = fastify.sequelize.models;
+  const userOrg = request.user.organize;
 
   const events = await Event.findAll({
     attributes: ['id', 'code', 'name'],
-    where: {
-      organize: request.user.organize,
-    },
+    where: userOrg === "devteam" ?
+        {}:{
+            organize: request.user.organize,
+        },
   });
 
   console.log(JSON.stringify(events, null, 2));
