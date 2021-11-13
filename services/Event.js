@@ -2,7 +2,7 @@ exports.getAllEvent = fastify => async function (request, reply) {
   const {Event} = fastify.sequelize.models;
 
   const events = await Event.findAll({
-    attributes: ['id', 'code', 'name', 'date', 'location'],
+    attributes: ['id', 'code', 'name', 'date', 'location', 'organize'],
   });
 
   console.log(JSON.stringify(events, null, 2));
