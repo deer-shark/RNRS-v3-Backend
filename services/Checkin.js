@@ -97,6 +97,9 @@ exports.getCheckinByEventId = fastify => async function (request, reply) {
         attributes: ['name'],
       },
     ],
+    order:[
+        ['id'],
+    ],
   });
 
   reply.code(200).send(checkin);
