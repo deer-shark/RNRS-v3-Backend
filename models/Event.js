@@ -23,6 +23,10 @@ module.exports = async function (fastify, opts) {
       },
       date: {
         type: DataTypes.DATEONLY,
+          get(){
+              const date = this.getDataValue('date');
+              return date === '1970-01-01' ? '長期活動' : date;
+          },
       },
       location: {
         type: DataTypes.STRING,
